@@ -11,7 +11,6 @@ local delimiters = {
 };
 
 local openings = std.set(std.objectFields(delimiters));
-local closings = std.set(std.objectValues(delimiters));
 
 local scores = {
   ')': 3,
@@ -24,8 +23,6 @@ local sumarray = function(arr) std.foldl(function(x, e) x + e, arr, 0);
 
 local push = function(stack, x) std.join([], [[x], stack]);
 local pop  = function(stack) [stack[0], stack[1:std.length(stack)]];
-
-local stack = [];
 
 local parsechar = function(parser, ch)
   if parser[1] != null
