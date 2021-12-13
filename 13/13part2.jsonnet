@@ -14,22 +14,15 @@ local input = std.foldl(
 local dots = std.set(input[0]);
 local folds = input[1];
 
-local foldy = function(dots, y)
-  [
-    [dot[0], if dot[1] < y then dot[1] else y+y-dot[1]]
-    for dot in dots
-  ];
-
-local foldx = function(dots, x)
-  [
-    [if dot[0] < x then dot[0] else x+x-dot[0], dot[1]]
-    for dot in dots
-  ];
-
 local fold = function(dots, instruction)
-  std.set(if instruction[0] == 'x'
-    then foldx(dots, instruction[1])
-  else foldy(dots, instruction[1]));
+  local offset = instruction[1];
+  std.set([
+    [
+      if instruction[0] == 'x' && dot[0] > offset then offset+offset-dot[0] else dot[0],
+      if instruction[0] == 'y' && dot[1] > offset then offset+offset-dot[1] else dot[1]
+    ]
+    for dot in dots
+  ]);
 
 local pic = std.foldl(fold, folds, dots);
 
