@@ -8,10 +8,8 @@ local sumarray = function(arr)
   std.foldl(sum, arr, 0);
 
 local parse = function(input)
-  local splitlines = function(str) std.split(str, '\n');
-
   [
-    local splitwords = function(str) std.split(str, ' ');
+    local words = std.split(line, ' ');
     local tokens = {
       A: '🪨',
       B: '🧻',
@@ -20,13 +18,12 @@ local parse = function(input)
       Y: '😐',
       Z: '👍',
     };
-    local words = splitwords(line);
 
     {
       them: tokens[words[0]],
       result: tokens[words[1]],
     }
-    for line in splitlines(input)
+    for line in std.split(input, '\n')
   ];
 
 local values = { '🪨': 1, '🧻': 2, '✂️': 3 };
