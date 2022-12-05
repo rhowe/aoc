@@ -1,5 +1,7 @@
 local input = std.rstripChars(importstr 'input', '\n');
 
+local debug = false;
+
 local tok = {
   A: '🪨',
   B: '🧻',
@@ -44,6 +46,9 @@ local play = function(arr)
   local them = arr[0];
   local result = arr[1];
   local us = required_move[them + result];
-  values[us] + bonus[result];
+  local total = values[us] + bonus[result];
+  if debug then
+    std.trace('They played ' + them + ' so we play ' + us + ' so that we ' + result + ' for a score of ' + total, total)
+  else total;
 
 sumarray([play(round) for round in parselines(splitlines(input))])
