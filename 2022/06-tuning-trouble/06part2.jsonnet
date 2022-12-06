@@ -6,10 +6,12 @@ local examples = [
   { msg: 'zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw', offset: 11 },
 ];
 
-local uniq = function(arr) std.length(arr) == std.length(std.set(arr));
-local finduniqseq = function(arr, n) [
-  uniq(arr[offset:offset + n])
-  for offset in std.range(0, std.length(arr) - n)
+local seqlen = 14;
+local uniq(arr) = std.length(arr) == std.length(std.set(arr));
+local findfirst(arr, x) = std.find(x, arr)[0];
+local finduniqseq(arr, len) = [
+  uniq(arr[offset:offset + len])
+  for offset in std.range(0, std.length(arr) - len)
 ];
 
-std.find(true, finduniqseq(std.rstripChars(importstr 'input', '\n'), 14))[0] + 14
+findfirst(finduniqseq(importstr 'input', seqlen), true) + seqlen
