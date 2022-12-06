@@ -10,18 +10,9 @@ local sumarray = function(arr)
 local parse = function(input)
   [
     local words = std.split(line, ' ');
-    local tokens = {
-      A: '🪨',
-      B: '🧻',
-      C: '✂️',
-      X: '👎',
-      Y: '😐',
-      Z: '👍',
-    };
-
     {
-      them: tokens[words[0]],
-      result: tokens[words[1]],
+      them: { A: '🪨', B: '🧻', C: '✂️' }[words[0]],
+      result: { X: '👎', Y: '😐', Z: '👍' }[words[1]],
     }
     for line in std.split(input, '\n')
   ];
