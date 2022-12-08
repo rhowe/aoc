@@ -1,0 +1,7 @@
+- hosts: localhost
+  tasks:
+    - include_tasks: fuel.yml
+      loop: "{{ lookup('file', 'input').splitlines() }}"
+      register: output_things
+    - name: wat dis
+      debug: msg="{{ output_things }}"
