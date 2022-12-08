@@ -1,0 +1,13 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    input_file: input
+  tasks:
+    - name: Read program
+      set_fact:
+        program: "{{ lookup('file', input_file).splitlines() | list }}"
+    - include_tasks: 8.yml
+      loop: "{{ program }}"
+      loop_control:
+        loop_var: bitflip_addr
+      when: program[bitflip_addr|int].partition(' ')[0] in ['jmp', 'nop']

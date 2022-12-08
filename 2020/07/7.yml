@@ -1,0 +1,49 @@
+
+- hosts: localhost
+  gather_facts: no
+  vars:
+    input_file: input
+  tasks:
+    - name: Copy input
+      copy:
+        src: "{{ input_file }}"
+        dest: tmp
+    - name: We know it's all bags
+      replace:
+        path: tmp
+        regexp: " bags?"
+        replace: ""
+    - name: Remove all line breaks
+      replace:
+        path: tmp
+        regexp: "no other"
+        replace: ""
+    - name: Remove trailing .
+      replace:
+        path: tmp
+        regexp: "\\.$"
+        replace: ""
+    - name: Read data
+      set_fact:
+        rule_data: "{{ lookup('file', 'tmp').splitlines() | reverse | list }}"
+    - name: Temp dir
+      file:
+        name: bags
+        state: directory
+    - name: Process bag defs
+      template:
+        dest: "bags/bag{{ bag_no }}.yml"
+        src: 7.j2
+      loop: "{{ rule_data }}"
+      loop_control:
+        index_var: bag_no
+    - name: Merge bags
+      assemble:
+        src: bags
+        dest: bags.yml
+    - name: Load bags
+      set_fact:
+        rules: "{{ lookup('file', 'bags.yml') | from_yaml }}"
+    - name: Debug
+      debug: msg="{{ rules }}"
+      

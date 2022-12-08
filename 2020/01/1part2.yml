@@ -1,0 +1,19 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Read input
+      set_fact:
+        filtered_input_data: "{{ lookup('file', 'input').splitlines() | map('int') | sort | list }}"
+    - name: Remove values which are clearly too big
+      set_fact:
+        filtered_input_data: "{{ input_data | reject('gt', 2020 - input_data[0] - input_data[1]) | list }}"
+    - name: Calculate cartesian product
+      set_fact:
+        cartesian_product: "{{ q('community.general.cartesian', filtered_input_data, filtered_input_data) | map('sort') | list | unique | list }}"
+    - name: Find items which sum to 2020
+      set_fact:
+        answer: "{{ item }}"
+      loop: "{{ cartesian_product }}"
+      when: 2020 - item[0] - item[1] in filtered_input_data and item[0] != item[1]
+    - name: Display output
+      debug: msg="{{ answer[0] * answer[1] * (2020 - answer[0] - answer[1]) }}"

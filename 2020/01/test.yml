@@ -1,0 +1,23 @@
+- hosts: localhost
+  tasks:
+    - name: Read input
+      set_fact:
+        input: "{{ lookup('file', 'input').splitlines() | map('int') | list }}"
+    - name: Find bounds
+      set_fact:
+        input_min: "{{ input | min | int}}"
+        input_max: "{{ input | max | int}}"
+    - name: Find bounds
+      set_fact:
+        pruned_input: "{{ input | reject ('gt', 2020 - 176) | reject('lt', 2020 - 2005) | list }}"
+    - name: minmax
+      debug: msg="min {{input_min}} max {{input_max}} pruned {{pruned_input}}"
+    - name: Find items which sum to 2020
+      set_fact:
+        answer: "{{ item }}"
+      with_community.general.cartesian:
+        - "{{ pruned_input }}"
+        - "{{ pruned_input }}"
+      when: item[0] + item[1] == 2020
+    - name: Display output
+      debug: msg="{{ answer }}"

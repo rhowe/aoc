@@ -1,0 +1,17 @@
+- hosts: localhost
+  tasks:
+    - name: Read input
+      set_fact:
+        input: "{{ lookup('file', 'input').splitlines() | map('int') | list }}"
+    - name: Prune impossible values from input
+      set_fact:
+        pruned_input: "{{ input | map('int') | reject('gt', 2020 - input | min | int) | reject('lt', 2020 - input | max | int) | list }}"
+    - name: Find items which sum to 2020
+      set_fact:
+        answer: "{{ item }}"
+      with_community.general.cartesian:
+        - "{{ pruned_input }}"
+        - "{{ pruned_input }}"
+      when: item[0] + item[1] == 2020
+    - name: Display output
+      debug: msg="{{ answer[0] * answer[1] }}"

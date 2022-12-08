@@ -13,3 +13,8 @@ Code](https://www.adventofcode.com).
 processing library spun out of Google.
 
 It is not a particularly appropriate choice.
+
+# 2020
+
+I attempted 2020 using [ansible](https://www.ansible.com/). It was very slow
+and awkward and I didn't get much done.

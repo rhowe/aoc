@@ -1,0 +1,20 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    input_file: input
+    target: 1038347917
+  tasks:
+    - name: Read input
+      set_fact:
+        numbers: "{{ lookup('file', input_file).splitlines() | list | map('int') | list | reject('gt', target) | list }}"
+    - name: Calculate running total
+      set_fact:
+        dummy: {{ numbers[idx+1] = numbers[idx] + numbers[idx+1] }}
+      loop: "{{ numbers[1] }}"
+      loop_control:
+        index_var: idx
+    - name: Bonza
+      debug: msg="{{idx}}:{{ item }}"
+      loop: "{{ numbers[:-1] }}"
+      loop_control:
+        index_var: idx

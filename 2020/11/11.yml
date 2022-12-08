@@ -1,0 +1,29 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    input_file: input
+  tasks:
+    - name: Copy input
+      copy:
+        dest: tmp
+        src: "{{ input_file }}"
+    - name: Ignore gaps
+      replace:
+        path: tmp
+        regexp: "\\."
+        replace: ""
+    - name: Occupy all seats
+      replace:
+        path: tmp
+        regexp: L
+        replace: "#"
+    - name: Mark seats about to be occupied
+      replace:
+        path: tmp
+        regexp: "(^|#)L(#|$)"
+        replace: "F"
+    - name: Mark seats about to be emptied
+      replace:
+        path: tmp
+        regexp: "(#+)####"
+        replace: "F####"

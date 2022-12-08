@@ -1,0 +1,212 @@
+
+- hosts: localhost
+  gather_facts: no
+  vars:
+    input_file: input
+  tasks:
+    - name: Copy input
+      copy:
+        src: "{{ input_file }}"
+        dest: tmp
+    - name: Remove all line breaks
+      replace:
+        path: tmp
+        regexp: "\n"
+        replace: " "
+    - name: Restore record separators
+      replace:
+        path: tmp
+        regexp: "  "
+        replace: "\n"
+    - name: Read data
+      set_fact:
+        responses: "{{ lookup('file', 'tmp').splitlines() | list }}"
+        total: 0
+    - name: Count responses per group
+      set_fact:
+        responders: "{{ responses | map('list') | map('select', 'eq', ' ') | map('list') | map('length') | list }}"
+        total: 0
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'a') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'b') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'c') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'd') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'e') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'f') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'g') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'h') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'i') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'j') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'k') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'l') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'm') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'n') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'o') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'p') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'q') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'r') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 's') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 't') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'u') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'v') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'w') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'x') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'y') | list | length == responders[loop_idx] + 1
+    - name: Result
+      set_fact:
+        total: "{{ total | int + 1 }}"
+      loop: "{{ responses | map('list') | list }}"
+      loop_control:
+        index_var: loop_idx
+      when: item | select('eq', 'z') | list | length == responders[loop_idx] + 1
+    - name: Total
+      debug: msg="{{ total }}"

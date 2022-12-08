@@ -1,0 +1,19 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    input_file: input
+  tasks:
+    - name: Read input
+      set_fact:
+        answer: 0
+        passwords: "{{ lookup('file', input_file).splitlines() | list | map('regex_replace', '^(\\d+)-(\\d+) (.): (.*)', '\\4') | map('list') | list }}"
+        low: "{{ lookup('file', input_file).splitlines() | list | map('regex_replace', '^(\\d+)-(\\d+) (.):.*', '\\1') | map('int') | list }}"
+        high: "{{ lookup('file', input_file).splitlines() | list | map('regex_replace', '^(\\d+)-(\\d+) (.):.*', '\\2') | map('int') | list }}"
+        letter: "{{ lookup('file', input_file).splitlines() | list | map('regex_replace', '^(\\d+)-(\\d+) (.):.*', '\\3') | list }}"
+    - name: Find compliant passwords
+      set_fact:
+        answer: "{{ answer | int + 1 }}"
+      loop: "{{ passwords | zip(letter, low, high) | list }}"
+      when: item[0] | length >= item[3] and item[0][item[2] - 1] != item[0][item[3] - 1] and (item[1] in [item[0][item[2] - 1], item[0][item[3] - 1]])
+    - name: Bingo
+      debug: msg="{{ answer }}"

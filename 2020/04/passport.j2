@@ -1,0 +1,5 @@
+{% set x = dict() %}
+{% for field in item.split(' ') %}
+{% set y = x.update(dict([field.partition(':')[0:3:2]])) %}
+{% endfor %}
+{{ x | to_yaml }}

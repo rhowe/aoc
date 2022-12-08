@@ -1,0 +1,54 @@
+DUMMY: &dotted_black dotted black
+DUMMY2: &faded_blue faded blue
+DUMMY3: &vibrant_plum
+- vibrant plum:
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *dotted_black
+  - *dotted_black
+  - *dotted_black
+  - *dotted_black
+  - *dotted_black
+  - *dotted_black
+DUMMY4: &dark_olive
+- dark olive:
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *dotted_black
+  - *dotted_black
+  - *dotted_black
+  - *dotted_black
+DUMMY5: &shiny_gold
+  - *dark_olive
+  - *vibrant_plum
+  - *vibrant_plum
+DUMMY6: &muted_yellow
+  - *shiny_gold
+  - *shiny_gold
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+  - *faded_blue
+DUMMY7: &bright_white
+  - *shiny_gold
+DUMMY8: &dark_orange
+  - *bright_white
+  - *bright_white
+  - *bright_white
+  - *muted_yellow
+  - *muted_yellow
+  - *muted_yellow
+  - *muted_yellow
+DUMMY9: &light_red
+  - *bright_white
+  - *muted_yellow
+  - *muted_yellow

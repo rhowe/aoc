@@ -1,0 +1,10 @@
+{% set bagdef = item.partition(' contain ') %}
+{% set contents = bagdef[2].split(', ') %}
+{% set baganchor = bagdef[0] | replace(' ', '_') %}
+{{ bagdef[0] }}: &{{ baganchor }}
+{% for inner in contents %}
+{% set innerdef = inner.partition(' ') %}
+{% for count in range(0, innerdef[0] | int) %}
+  - *{{ innerdef[2] | replace(' ', '_') }}
+{% endfor %}
+{% endfor %}

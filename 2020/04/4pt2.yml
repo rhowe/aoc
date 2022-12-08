@@ -1,0 +1,29 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: dbg
+      debug: msg="{{ lookup('file', item) | from_yaml }}"
+      with_fileglob: "passports/*.yml"
+      register: passport_data
+    - name: dbg2
+      set_fact:
+        passports: "{{ passport_data.results | map(attribute='msg') | list }}"
+        valid: 0
+    - name: count
+      set_fact:
+        valid: "{{ valid | int + 1 }}"
+      loop: "{{ passports }}"
+      when: "
+      item.byr is defined and item.iyr is defined and item.eyr is defined
+  and item.hgt is defined and item.hcl is defined and item.ecl is defined
+  and item.pid is defined
+  and (item.byr in (range(1920, 2003) | map('string') | list))
+  and (item.iyr in (range(2010, 2021) | map('string') | list))
+  and (item.eyr in (range(2020, 2031) | map('string') | list))
+  and (item.hgt | regex_search('^(1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in)$'))
+  and (item.hcl | regex_search('^#[0-9a-f]{6}'))
+  and item.ecl in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
+  and (item.pid | regex_search('^[0-9]{9}$'))"
+      register: valid_passports
+    - name: kill me
+      debug: msg="{{ valid }}"

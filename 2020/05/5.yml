@@ -1,0 +1,13 @@
+
+- hosts: localhost
+  gather_facts: no
+  vars:
+    input_file: input
+  tasks:
+    - name: Read
+      set_fact:
+        allocated_seats: "{{ lookup('file', input_file).splitlines() | list | map('replace', 'B', '1') | map('replace', 'F', '0') | map('replace', 'R', '1') | map('replace', 'L', '0') | map('int', 0, 2) | map('string') | list }}"
+    - name: Print (loop)
+      debug: msg="{{ item }}"
+      with_sequence: start={{ allocated_seats | map('int') | min }} end={{ allocated_seats | map('int') | max }}
+      when: item not in allocated_seats
