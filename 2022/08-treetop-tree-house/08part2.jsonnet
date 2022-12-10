@@ -15,6 +15,15 @@ local sum(a, b) = a + b;
 local sumarray(arr) = std.foldl(sum, arr, 0);
 local arraymax(arr) = std.foldl(std.max, arr, 0);
 
+local mapWithIndex2d(func, arr) = std.mapWithIndex(
+  function(y, row)
+    std.mapWithIndex(
+      function(x, elem)
+        func(x, y, elem), row
+    ),
+  arr
+);
+
 local findfirst(arr, cond, idx=0) =
   local len = std.length(arr);
   if len == 0 then -1
@@ -26,16 +35,15 @@ local scenicscore(x, y, grid, w, h) =
   local row = grid[y];
   local col = [r[x] for r in grid];
   local cond(x) = x >= elem;
-  local view_l = if x == 0 then -2 else findfirst(std.reverse(row[0:x]), cond);
-  local view_r = if x == width - 1 then -2 else findfirst(row[x + 1:w], cond);
-  local view_u = if y == 0 then -2 else findfirst(std.reverse(col[0:y]), cond);
-  local view_d = if y == height - 1 then -2 else findfirst(col[y + 1:height], cond);
+  local view_l = findfirst(std.reverse(row[0:x]), cond);
+  local view_r = findfirst(row[x + 1:w], cond);
+  local view_u = findfirst(std.reverse(col[0:y]), cond);
+  local view_d = findfirst(col[y + 1:height], cond);
   local score =
-    if view_l == -2 || view_r == -2 || view_u == -2 || view_d == -2 then 0 else
-      (if view_l == -1 then x else (view_l + 1))
-      * (if view_r == -1 then width - x - 1 else (view_r + 1))
-      * (if view_u == -1 then y else (view_u + 1))
-      * (if view_d == -1 then height - y - 1 else (view_d + 1));
+    (if view_l == -1 then x else (view_l + 1))
+    * (if view_r == -1 then width - x - 1 else (view_r + 1))
+    * (if view_u == -1 then y else (view_u + 1))
+    * (if view_d == -1 then height - y - 1 else (view_d + 1));
 
   if debug
   then std.trace('[' + x + ',' + y + '] elem=' + elem
@@ -53,10 +61,9 @@ local print(grid) = std.join('\n', [
   for row in grid
 ]);
 
-local views =
-  std.mapWithIndex(function(y, row)
-    std.mapWithIndex(function(x, elem) scenicscore(x, y, input, width, height), row)
-                   , input);
+local views = mapWithIndex2d(function(x, y, elem)
+  if x == 0 || y == 0 || x == width - 1 || y == height - 1 then 0
+  else scenicscore(x, y, input, width, height), input);
 
 arraymax([
   arraymax(row)
