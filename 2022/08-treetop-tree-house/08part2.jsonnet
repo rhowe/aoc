@@ -11,8 +11,6 @@ local input = [
 local width = std.length(input[0]);
 local height = std.length(input);
 
-local sum(a, b) = a + b;
-local sumarray(arr) = std.foldl(sum, arr, 0);
 local arraymax(arr) = std.foldl(std.max, arr, 0);
 
 local mapWithIndex2d(func, arr) = std.mapWithIndex(
@@ -38,12 +36,12 @@ local scenicscore(x, y, grid, w, h) =
   local view_l = findfirst(std.reverse(row[0:x]), cond);
   local view_r = findfirst(row[x + 1:w], cond);
   local view_u = findfirst(std.reverse(col[0:y]), cond);
-  local view_d = findfirst(col[y + 1:height], cond);
+  local view_d = findfirst(col[y + 1:h], cond);
   local score =
     (if view_l == -1 then x else (view_l + 1))
-    * (if view_r == -1 then width - x - 1 else (view_r + 1))
+    * (if view_r == -1 then w - x - 1 else (view_r + 1))
     * (if view_u == -1 then y else (view_u + 1))
-    * (if view_d == -1 then height - y - 1 else (view_d + 1));
+    * (if view_d == -1 then h - y - 1 else (view_d + 1));
 
   if debug
   then std.trace('[' + x + ',' + y + '] elem=' + elem
