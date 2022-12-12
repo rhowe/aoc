@@ -15,7 +15,7 @@ local crt = {
     local clk = if debug then std.trace('' + self, self.clk) else self.clk;
     local col = clk % 40;
     local row = std.floor(clk / 40);
-    local draw = col >= self.X - 1 && col <= self.X + 1;
+    local draw = std.abs(self.X - col) <= 1;
 
     self {
       clk: clk + 1,
