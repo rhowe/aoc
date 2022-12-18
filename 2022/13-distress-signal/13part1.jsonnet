@@ -16,7 +16,7 @@ local cmp(left, right) =
     then if l0 < r0 then -1 else if l0 == r0 then 0 else 1
     else cmp(if l0_t == 'array' then l0 else [l0], if r0_t == 'array' then r0 else [r0]);
 
-    if res == 0 then cmp(left[1:l_sz], right[1:r_sz])
+    if res == 0 then cmp(left[1:], right[1:])
     else res;
 
 
