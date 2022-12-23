@@ -9,12 +9,15 @@ local commands = std.flatMap(expand_command, [
 ]);
 
 local adjacent(p1, p2) = std.abs(p1[0] - p2[0]) < 2 && std.abs(p1[1] - p2[1]) < 2;
-local cmp(x, y) = if x < y then -1 else if x == y then 0 else 1;
-local tailpos(head, tail) = if adjacent(head, tail)
-then tail
-else
-  if head[0] == tail[0] || head[1] == tail[1] then [tail[0] + ((head[0] - tail[0]) / 2), tail[1] + ((head[1] - tail[1]) / 2)]
-  else [tail[0] + cmp(head[0], tail[0]), tail[1] + cmp(head[1], tail[1])]
+local tailpos(head, tail) =
+  if adjacent(head, tail) then tail
+  else
+    local drag =
+      if head[0] == tail[0] || head[1] == tail[1]
+      then function(h, t) t + ((h - t) / 2)
+      else function(h, t) t + if h < t then -1 else if h == t then 0 else 1;
+
+    [drag(head[0], tail[0]), drag(head[1], tail[1])]
 ;
 
 std.length(std.set(std.foldl(
