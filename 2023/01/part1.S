@@ -1,24 +1,24 @@
-   ;LD HL, example
-   LD HL, input
-   LD DE, bcdlist
+	;LD HL, example
+	LD HL, input
+	LD DE, bcdlist
 
-   CALL parseinput
+	CALL parseinput
 
-   LD BC, linecount
-   LD HL, bcdlist ; The list to sum
+	LD BC, linecount
+	LD HL, bcdlist ; The list to sum
 	LD DE, result ; Where to put the total
-   CALL bcdsumlist
+	CALL bcdsumlist
 
 	LD A, 0
 	LD HL, result
-   HALT
+	HALT
 
 ; findnumber, store n1 and n2
 ; findnext store n2
 parseinput:
-   CALL findnext
+	CALL findnext
 
-   CP 1 ; number
+	CP 1 ; number
 	JR Z, 1f
 	CP 2 ; newline - shouldn't happen
 	CALL Z, e_badinput
@@ -28,17 +28,17 @@ parseinput:
 	INC HL
 	JR parseinput
 1:
-   LD A, (HL)
+	LD A, (HL)
 	SUB 0x30 ; ASCII to int
-   LD (DE), A
+	LD (DE), A
 	INC DE
-   LD (DE), A
+	LD (DE), A
 	INC HL
 
 loop2:
-   CALL findnext
+	CALL findnext
 
-   CP 1 ; number
+	CP 1 ; number
 	JR Z, hit2
 
 	CP 2 ; newline
@@ -50,17 +50,17 @@ loop2:
 	INC HL
 	JR loop2
 hit2:
-   LD A, (HL)
+	LD A, (HL)
 	SUB 0x30 ; ASCII to int
-   LD (DE), A
-   INC HL
+	LD (DE), A
+	INC HL
 	JR loop2
 next:
-   INC DE
+	INC DE
 	INC HL
 
-   ; Increment the line count
-   PUSH DE
+	; Increment the line count
+	PUSH DE
 	PUSH HL
 	LD DE, one
 	LD HL, linecount
@@ -80,7 +80,7 @@ sumwords:
 	ADD A, (HL)
 	LD (HL), A
 
-   INC DE
+	INC DE
 	INC HL
 	LD A, (DE)
 	ADC A, (HL)
@@ -95,28 +95,28 @@ sumwords:
 ;   1: number
 ;   2: newline
 findnext:
-   LD A, (HL)
-   ; Input is null terminated
-   CP 0
-   JR NZ, 1f
-   LD A, 0xFF
+	LD A, (HL)
+	; Input is null terminated
+	CP 0
+	JR NZ, 1f
+	LD A, 0xFF
 	RET
 
 1:
 	CP 0x0A ; newline
-   JR NZ, 1f
-   LD A, 2
+	JR NZ, 1f
+	LD A, 2
 	RET
 
 1:
-   CALL isnumeric
-   CP 1
-   JR NZ, 1f
+	CALL isnumeric
+	CP 1
+	JR NZ, 1f
 	RET
 
 1:
-   INC HL
-   JR findnext
+	INC HL
+	JR findnext
 
 ; Tests whether the value in A is an ASCII 0-9
 ; Returns result in A: 1 if so, 0 if not
@@ -129,15 +129,15 @@ isnumeric:
 	LD A, 1
 	RET
 1:
-   LD A, 0
-   RET
+	LD A, 0
+	RET
 
 ; DE: pointer to result
 ; HL: pointer to list
 ; BC: pointer to number of elements
 bcdsumlist:
 	; Load 2-digit big-endian BCD value from HL into A
-   CALL loadbcd
+	CALL loadbcd
 	PUSH HL ; Save list position
 	PUSH BC
 
@@ -162,19 +162,19 @@ bcdsumlist:
 	INC HL ; Advance to next entry
 	INC HL ; Advance to next entry
 
-   JR bcdsumlist
+	JR bcdsumlist
 1:
-   POP BC
+	POP BC
 	POP HL
-   RET
+	RET
 
 ; HL: pointer to 2-digit BCD value (big-endian)
 ; Returns value in A
 loadbcd:
-   PUSH BC
-   PUSH HL
+	PUSH BC
+	PUSH HL
 
-   LD A, (HL)
+	LD A, (HL)
 	CALL mul10
 	INC HL
 	ADD A, (HL)
@@ -182,13 +182,13 @@ loadbcd:
 
 	POP HL
 	POP BC
-   RET
+	RET
 
 ; Multiplies the value in A by 10
 ; Trashes: B
 mul10:
 	LD B, A
-   SLA A
+	SLA A
 	SLA A ; x4
 	ADD A, B
 	SLA A
@@ -197,7 +197,7 @@ mul10:
 ; HL: pointer to value
 ; A: number to add
 add8b32:
-   ADD A, (HL)
+	ADD A, (HL)
 	LD (HL), A
 	RET NC
 	INC HL
@@ -221,9 +221,9 @@ add8b32:
 ; A: number to subtract
 ; Clobbers: B, A, HL
 sub8b16:
-   PUSH HL
+	PUSH HL
 	PUSH BC
-   LD B, A
+	LD B, A
 	LD A, (HL)
 	SBC A, B
 	LD (HL), A
@@ -235,8 +235,8 @@ sub8b16:
 	LD (HL), A
 	CALL C, e_underflow
 1:
-   POP BC
-   POP HL
+	POP BC
+	POP HL
 	RET
 
 ; B: byte count (0 means 256)
@@ -244,10 +244,10 @@ sub8b16:
 ; clobbers: A, B, HL
 ; On return, Z is set if all bytes are 0
 iszero:
-   PUSH HL
+	PUSH HL
 	PUSH BC
 1:
-   LD A, (HL)
+	LD A, (HL)
 	CP 0
 	JR NZ, 1f
 	DEC B
@@ -255,45 +255,45 @@ iszero:
 	INC HL
 	JR 1b
 1:
-   POP BC
+	POP BC
 	POP HL
 	RET
 
 e_overflow:
-   PUSH HL
-   PUSH BC
-   LD HL, errstr_overflow
+	PUSH HL
+	PUSH BC
+	LD HL, errstr_overflow
 	LD B, 254
 	HALT
 
 e_underflow:
-   PUSH HL
-   LD HL, errstr_underflow
+	PUSH HL
+	LD HL, errstr_underflow
 	LD B, 254
 	HALT
 
 e_badinput:
-   LD HL, errstr_badinput
+	LD HL, errstr_badinput
 	LD B, 253
 	HALT
 
 example:
 .incbin "example-input"
-   DB 0
+	DB 0
 input:
 .incbin "input"
-   DB 0
+	DB 0
 one:
-   DW 0x1
+	DW 0x1
 linecount:
-   DW 0
+	DW 0
 result:
-   DB 0x0, 0x0, 0x0, 0x0
+	DB 0x0, 0x0, 0x0, 0x0
 errstr_overflow:
-   DB "Arithmetic overflow",0
+	DB "Arithmetic overflow",0
 errstr_underflow:
-   DB "Arithmetic underflow",0
+	DB "Arithmetic underflow",0
 errstr_badinput:
-   DB "Bad input",0
+	DB "Bad input",0
 bcdlist:
-   DS 2000
+	DS 2000
