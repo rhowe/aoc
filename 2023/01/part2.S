@@ -1,43 +1,43 @@
 start:
 	;LD HL, example1
 	;LD HL, example2
-   LD HL, input
+	LD HL, input
 	PUSH HL
 1:
 	PUSH HL
-   LD DE, w_one
+	LD DE, w_one
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_two
+	LD DE, w_two
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_three
+	LD DE, w_three
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_four
+	LD DE, w_four
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_five
+	LD DE, w_five
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_six
+	LD DE, w_six
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_seven
+	LD DE, w_seven
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_eight
+	LD DE, w_eight
 	CALL do_numberify
-   POP HL
+	POP HL
 	PUSH HL
-   LD DE, w_nine
+	LD DE, w_nine
 	CALL do_numberify
 	POP HL
 	INC HL
@@ -45,7 +45,7 @@ start:
 	CP 0
 	JR NZ, 1b ; If we're not at the end of the input, keep going
 
-   POP HL
+	POP HL
 	LD DE, bcdlist
 	CALL parseinput
 
@@ -78,8 +78,8 @@ do_numberify:
 ; A: value to replace 1st character with
 ; Replaces e.g. 'five' with '5ive', inspired by https://en.wikipedia.org/wiki/Five_(group)
 numberify:
-   LD (numberify_tmp), A
-   PUSH HL
+	LD (numberify_tmp), A
+	PUSH HL
 	PUSH DE
 	POP HL
 
@@ -102,7 +102,7 @@ numberify:
 	POP BC
 	RET NZ ; No match
 	LD A, (numberify_tmp)
-   LD (HL), A
+	LD (HL), A
 	RET
 numberify_tmp: DB 0
 
@@ -355,10 +355,10 @@ iszero:
 ; HL: pointer to string
 ; on exit, HL contains string length in bytes
 strlen:
-   LD BC, 0x0
-   LD A, 0
+	LD BC, 0x0
+	LD A, 0
 	CPIR
-   LD HL, 0xffff
+	LD HL, 0xffff
 	SBC HL, BC
 	RET
 
@@ -368,7 +368,7 @@ strlen:
 ; Z set if equal, unset if not
 strncmp:
 	LD A, (DE)
-   CPI
+	CPI
 	RET NZ ; found a difference
 	RET PO ; byte count reached
 	INC DE ; onto the next byte
