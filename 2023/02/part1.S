@@ -1,11 +1,26 @@
-		  LD HL, example1
+		  ;LD HL, example1
+		  LD HL, input
 		  LD DE, games
 		  CALL parseinput
+		  LD (IX), 0 ; Terminate list
 		  LD IX, games
-		  INC IX
-		  INC IX
 		  LD IY, challenge
+1:
+		  PUSH IX ; Pointer to game number
 		  CALL comparegame
+		  POP HL ; Pointer to game number
+		  JR NZ, 2f ; Game impossible
+		  LD B, 0
+		  LD C, (HL)
+		  LD HL, (result)
+		  ADD HL, BC
+		  LD (result), HL
+2:
+		  LD A, (IX)
+		  CP 0
+		  JR NZ, 1b ; More games to process
+3:
+		  LD HL, (result)
 		  HALT
 
 parseinput:
@@ -234,8 +249,36 @@ mul10:
 
 ; IX: Pointer to game
 ; IY: Pointer to comparison
-; Returns with C set if not possible, unset if possible
+; Returns with Z set if possible, unset if not possible
 comparegame:
+		  INC IX
+		  LD B, (IX) ; Number of hands
+		  INC IX ; Points to first hand
+1:
+		  LD A, B
+		  CP 0
+		  RET Z
+		  CALL comparehand
+		  JR C, 1f
+		  INC IX
+		  INC IX
+		  INC IX
+		  DEC B
+		  JR 1b
+1:
+		  INC IX
+		  INC IX
+		  INC IX
+		  DEC B
+		  JR NZ, 1b
+		  LD A, 1
+		  CP 0
+		  RET
+
+; IX: Pointer to hand
+; IY: Pointer to comparison
+; Returns with C set if not possible, unset if possible
+comparehand:
 		  LD A, (IY)
 		  CP (IX)
 		  RET C
@@ -246,7 +289,7 @@ comparegame:
 		  CP (IX+2)
 		  RET
 
-result: DB 0
+result: DW 0
 e_badinput:
 		  PUSH HL
 		  PUSH AF
@@ -271,5 +314,8 @@ challenge:
 		  DB 12, 13, 14
 example1:
 		  .incbin "input-example1"
+		  DB 0
+input:
+		  .incbin "input"
 		  DB 0
 games:

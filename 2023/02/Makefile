@@ -12,7 +12,7 @@ run-part2: part2.hex
 	sz80 $^ -e run -e "(rom[HL+1] << 8) + rom[HL]" -e quit
 
 run-part1: part1.hex
-	sz80 $^ -e run -e "(rom[HL+1] << 8) + rom[HL]" -e quit
+	sz80 $^ -e run -e "HL" -e quit
 
 clean:
 	rm -f part1 part2 *.o *.hex
