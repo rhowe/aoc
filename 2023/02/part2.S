@@ -1,6 +1,5 @@
-		  ; FIXME: Power for game 3 is miscalculated
-		  LD HL, example1
-		  ;LD HL, input
+		  ;LD HL, example1
+		  LD HL, input
 		  LD DE, games
 		  CALL parseinput
 		  LD (IX), 0 ; Terminate list
@@ -15,12 +14,19 @@
 		  ; Add it to cumulative result
 		  LD HL, (result)
 		  ADD HL, BC
+		  JR NC, 2f
+		  PUSH HL
+		  LD HL, (result+2)
+		  INC HL
+		  LD (result+2), HL
+		  POP HL
+2:
 		  LD (result), HL
 		  LD A, (IX)
 		  CP 0
 		  JR NZ, 1b ; More games to process
 3:
-		  LD HL, (result)
+		  LD HL, result
 		  HALT
 
 parseinput:
@@ -339,15 +345,23 @@ mulDE:
 		  JR NZ, 1b
 		  RET
 
-result: DW 0
+result: DW 0, 0
 e_badinput:
 		  PUSH HL
 		  PUSH AF
-		  LD HL, e_badinput
+		  LD HL, s_badinput
 		  LD A, 0xE4
+		  HALT
+e_overflow:
+		  PUSH HL
+		  PUSH AF
+		  LD HL, s_overflow
+		  LD A, 0xD4
 		  HALT
 s_badinput:
 		  DB "Bad input", 0
+s_overflow:
+		  DB "Overflow", 0
 s_game:
 		  DB "Game ", 0
 s_colonspace:
