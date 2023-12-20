@@ -377,9 +377,6 @@ s_blue:
 example1:
 		  .incbin "input-example1"
 		  DB 0
-example1_broken:
-		  .incbin "input-example1-broken"
-		  DB 0
 input:
 		  .incbin "input"
 		  DB 0
