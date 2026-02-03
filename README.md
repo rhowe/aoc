@@ -3,6 +3,19 @@
 This is somewhere to record my attempts at [Advent of
 Code](https://www.adventofcode.com).
 
+# 2025
+
+2025 was going to be the year of rego. It pretty much went the same way as
+2024.
+
+# 2024
+
+2024 was going to be the year of CUE. I pretty much gave up immediately.
+
+# 2023
+
+2023 I had a go with Z80 assembly. Hey, at least it executed quickly.
+
 # 2022
 
 2022 has also started with jsonnet, but we'll see if it stays that way.
