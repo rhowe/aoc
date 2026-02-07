@@ -20,15 +20,15 @@ command: aocDay1: {
 	}
 
 	// Split the input on line breaks into an array of strings
-	let inputLines = strings.Split(readInput.contents, "\n")
+	let inputLines = strings.Split(strings.TrimSpace(readInput.contents), "\n")
 
-	// Split each line on spaces
-	let inputLinesTokenised = [for line in inputLines if line != "" {strings.Split(line, " ")}]
-
-	// Parse strings into integers, discarding empty strings resulting from consecutive whitespace
+	// Split each line on spaces, discarding empty tokens
+	// Parse strings into integers
 	// Results in an array of pairs of numbers
 	// e.g. [ [1,2], [1,3], ...]
-	let parsedInput = [for line in inputLinesTokenised {[for n in line if n != "" {strconv.ParseUint(n, 10, 0)}]}]
+	let parsedInput = [for line in inputLines {
+		[for tok in strings.Split(line, " ")
+			if tok != "" {strconv.ParseUint(tok, 10, 0)}]}]
 
 	// Transpose the arrays
 	// e.g. [ [1, 2], [3, 4], [5, 6] ]
