@@ -62,7 +62,7 @@ command: aocDay1: {
 
 	// Calculate the similarity scores
 	let similarityScores = [
-		for left in transposedInputSorted[0] {left * list.Sum([for right in transposedInputSorted[1] if left == right {1}])},
+		for left in transposedInputSorted[0] {left * len([for right in transposedInputSorted[1] if left == right {right}])},
 	]
 
 	// Sum the similarity scores
