@@ -58,9 +58,22 @@ command: aocDay1: {
 	// Sum the distances
 	let sumDistances = list.Sum(distances)
 
+	// A list of unique values in the left column
+	let uniqueLeftValues = {
+		let leftList = transposedInputSorted[0]
+		[for idx, left in leftList if !list.Contains(list.Drop(leftList, idx+1), left) {left}]
+	}
+
+	// Construct a map of values in the left list and their frequency in the right list
+	// Keys have to be strings, somewhat annoyingly
+	let leftFreqInRight = {
+		let rightList = transposedInputSorted[1]
+		for left in uniqueLeftValues {(strconv.FormatInt(left, 10)): len([for elem in rightList if elem == left {true}])}
+	}
+
 	// Calculate the similarity scores
 	let similarityScores = [
-		for left in transposedInputSorted[0] {left * len([for right in transposedInputSorted[1] if left == right {right}])},
+		for left in transposedInputSorted[0] {left * leftFreqInRight[strconv.FormatInt(left, 10)]},
 	]
 
 	// Sum the similarity scores
