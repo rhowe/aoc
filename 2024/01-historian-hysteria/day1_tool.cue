@@ -26,32 +26,32 @@ command: aocDay1: {
 	// Parse strings into integers
 	// Results in an array of pairs of numbers
 	// e.g. [ [1,2], [1,3], ...]
-	let parsedInput = [...[int, int]] & [for line in inputLines {
-		[for tok in strings.Split(line, " ")
-			if tok != "" {strconv.ParseUint(tok, 10, 0)}]}]
+	let parsedInput = [...[string, string]] & [for line in inputLines {
+		[for tok in strings.SplitN(line, " ", 2)
+			{strings.TrimSpace(tok)}]}]
 
 	// Transpose the arrays
 	// e.g. [ [1, 2], [3, 4], [5, 6] ]
 	// becomes [ [ 1, 3, 5], [2, 4, 6] ]
-	let transposedInput = [[...int], [...int]] & [
+	let transposedInput = [[...string], [...string]] & [
 		[for pair in parsedInput {pair[0]}],
 		[for pair in parsedInput {pair[1]}],
 	]
 
 	// Sort each array
-	let transposedInputSorted = [[...int], [...int]] & [for i in transposedInput {list.Sort(i, list.Ascending)}]
+	let transposedInputSorted = [[...string], [...string]] & [for i in transposedInput {list.Sort(i, list.Ascending)}]
 
 	// Reverse the transposition
 	// e.g. [ [ 1, 3, 5], [2, 4, 6] ]
 	// becomes [ [1, 2], [3, 4], [5, 6] ]
-	let pairs = [...[int, int]] & [for idx, left in transposedInputSorted[0] {
-		let right = int & transposedInputSorted[1][idx]
+	let pairs = [...[string, string]] & [for idx, left in transposedInputSorted[0] {
+		let right = string & transposedInputSorted[1][idx]
 		[left, right]
 	}]
 
 	// Calculate the difference within each pair
 	let distances = [...int] & [for pair in pairs {
-		let ordered = [int, int] & list.Sort(pair, list.Ascending)
+		let ordered = [int, int] & list.Sort([for elem in pair {strconv.ParseUint(elem, 10, 0)}], list.Ascending)
 		ordered[1] - ordered[0]
 	}]
 
@@ -59,21 +59,20 @@ command: aocDay1: {
 	let sumDistances = int & list.Sum(distances)
 
 	// A list of unique values in the left column
-	let uniqueLeftValues = [...int] & {
-		let leftList = [...int] & transposedInputSorted[0]
+	let uniqueLeftValues = [...string] & {
+		let leftList = [...string] & transposedInputSorted[0]
 		[for idx, left in leftList if !list.Contains(list.Drop(leftList, idx+1), left) {left}]
 	}
 
 	// Construct a map of values in the left list and their frequency in the right list
-	// Keys have to be strings, somewhat annoyingly
 	let leftFreqInRight = {
-		let rightList = [...int] & transposedInputSorted[1]
-		for left in uniqueLeftValues {(strconv.FormatInt(left, 10)): len([for elem in rightList if elem == left {true}])}
+		let rightList = [...string] & transposedInputSorted[1]
+		for left in uniqueLeftValues {(left): len([for elem in rightList if elem == left {true}])}
 	}
 
 	// Calculate the similarity scores
 	let similarityScores = [...int] & [
-		for left in transposedInputSorted[0] {left * leftFreqInRight[strconv.FormatInt(left, 10)]},
+		for left in transposedInputSorted[0] {strconv.ParseUint(left, 10, 0) * leftFreqInRight[left]},
 	]
 
 	// Sum the similarity scores
