@@ -30,15 +30,12 @@ command: aocDay1: {
 		[for tok in strings.Split(line, " ")
 			if tok != "" {strconv.ParseUint(tok, 10, 0)}]}]
 
-	// Indexes into the input array
-	let lineIndexes = list.Range(0, len(inputLines), 1)
-
 	// Transpose the arrays
 	// e.g. [ [1, 2], [3, 4], [5, 6] ]
 	// becomes [ [ 1, 3, 5], [2, 4, 6] ]
 	let transposedInput = [
-		[for idx in lineIndexes {parsedInput[idx][0]}],
-		[for idx in lineIndexes {parsedInput[idx][1]}],
+		[for pair in parsedInput {pair[0]}],
+		[for pair in parsedInput {pair[1]}],
 	]
 
 	// Sort each array
@@ -47,13 +44,14 @@ command: aocDay1: {
 	// Reverse the transposition
 	// e.g. [ [ 1, 3, 5], [2, 4, 6] ]
 	// becomes [ [1, 2], [3, 4], [5, 6] ]
-	let pairs = [for idx in lineIndexes {
-		[transposedInputSorted[0][idx], transposedInputSorted[1][idx]]
+	let pairs = [for idx, left in transposedInputSorted[0] {
+		let right = transposedInputSorted[1][idx]
+		[left, right]
 	}]
 
 	// Calculate the difference within each pair
-	let distances = [for idx in lineIndexes {
-		let ordered = list.Sort(pairs[idx], list.Ascending)
+	let distances = [for pair in pairs {
+		let ordered = list.Sort(pair, list.Ascending)
 		ordered[1] - ordered[0]
 	}]
 
