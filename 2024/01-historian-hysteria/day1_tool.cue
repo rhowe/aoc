@@ -12,6 +12,10 @@ import "tool/file"
 
 inputfile: *"input" | string @tag(input)
 
+answer1: int | int @tag(answer1, type=int)
+
+answer2: int | int @tag(answer2, type=int)
+
 command: aocDay1: {
 	// read input
 	readInput: file.Read & {
@@ -57,7 +61,7 @@ command: aocDay1: {
 	}]
 
 	// Sum the distances
-	let sumDistances = int & list.Sum(distances)
+	let sumDistances = answer1 & list.Sum(distances)
 
 	// A list of unique values in the left column
 	let uniqueLeftValues = [...string] & {
@@ -77,7 +81,7 @@ command: aocDay1: {
 	]
 
 	// Sum the similarity scores
-	let sumSimilarities = int & list.Sum(similarityScores)
+	let sumSimilarities = answer2 & list.Sum(similarityScores)
 
 	// Profit
 	echoResult: cli.Print & {
