@@ -22,13 +22,14 @@ command: aocDay1: {
 	// Split the input on line breaks into an array of strings
 	let inputLines = [...string] & strings.Split(strings.TrimSpace(readInput.contents), "\n")
 
-	// Split each line on spaces, discarding empty tokens
-	// Parse strings into integers
-	// Results in an array of pairs of numbers
-	// e.g. [ [1,2], [1,3], ...]
-	let parsedInput = [...[string, string]] & [for line in inputLines {
-		[for tok in strings.SplitN(line, " ", 2)
-			{strings.TrimSpace(tok)}]}]
+	// The input is parsed into a list of pairs of strings
+	#InputData: [...[string, string]]
+
+	// Split each line on spaces
+	let parsedInput = #InputData & [for line in inputLines {
+		let tokens = strings.SplitN(line, " ", 2)
+		[tokens[0], strings.TrimSpace(tokens[1])]
+	}]
 
 	// Transpose the arrays
 	// e.g. [ [1, 2], [3, 4], [5, 6] ]
