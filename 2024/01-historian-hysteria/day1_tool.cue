@@ -12,9 +12,9 @@ import "tool/file"
 
 inputfile: *"input" | string @tag(input)
 
-answer1: int | int @tag(answer1, type=int)
+answer1: *int | int @tag(answer1, type=int)
 
-answer2: int | int @tag(answer2, type=int)
+answer2: *int | int @tag(answer2, type=int)
 
 command: aocDay1: {
 	// read input
@@ -38,9 +38,8 @@ command: aocDay1: {
 	// Transpose the arrays
 	// e.g. [ [1, 2], [3, 4], [5, 6] ]
 	// becomes [ [ 1, 3, 5], [2, 4, 6] ]
-	let transposedInput = [[...string], [...string]] & [
-		[for pair in parsedInput {pair[0]}],
-		[for pair in parsedInput {pair[1]}],
+	let transposedInput = [[...string], [...string]] & [for idx in [0, 1] {
+		[for pair in parsedInput {pair[idx]}]},
 	]
 
 	// Sort each array
