@@ -64,7 +64,7 @@ command: aocDay1: {
 
 	// A list of unique values in the left column
 	let uniqueLeftValues = [...string] & {
-		let leftList = [...string] & transposedInputSorted[0]
+		let leftList = [...string] & transposedInput[0]
 		[for idx, left in leftList if !list.Contains(list.Drop(leftList, idx+1), left) {left}]
 	}
 
