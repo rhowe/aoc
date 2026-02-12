@@ -45,7 +45,9 @@ command: aocDay1: {
 	]
 
 	// Sort each array
-	let transposedInputSorted = [[...string], [...string]] & [for i in transposedInput {list.Sort(i, list.Ascending)}]
+	let transposedInputSorted = [[...string], [...string]] & [for i in transposedInput {
+		list.Sort(i, list.Ascending)
+	}]
 
 	// Reverse the transposition
 	// e.g. [ [ 1, 3, 5], [2, 4, 6] ]
@@ -56,7 +58,7 @@ command: aocDay1: {
 	}]
 
 	// Calculate the difference within each pair
-	let distances = [...int] & [for pair in pairs {
+	let distances = [...(int & >=0)] & [for pair in pairs {
 		math.Abs(strconv.ParseUint(pair[0], 10, 0) - strconv.ParseUint(pair[1], 10, 0))
 	}]
 
