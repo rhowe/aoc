@@ -2,6 +2,8 @@ package aoc2024day1
 
 import "list"
 
+import "math"
+
 import "strconv"
 
 import "strings"
@@ -55,8 +57,7 @@ command: aocDay1: {
 
 	// Calculate the difference within each pair
 	let distances = [...int] & [for pair in pairs {
-		let ordered = [int, int] & list.Sort([for elem in pair {strconv.ParseUint(elem, 10, 0)}], list.Ascending)
-		ordered[1] - ordered[0]
+		math.Abs(strconv.ParseUint(pair[0], 10, 0) - strconv.ParseUint(pair[1], 10, 0))
 	}]
 
 	// Sum the distances
