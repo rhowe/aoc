@@ -79,7 +79,7 @@ command: aocDay1: {
 
 	// Calculate the similarity scores
 	let similarityScores = [...int] & [
-		for left in transposedInputSorted[0] {strconv.ParseUint(left, 10, 0) * leftFreqInRight[left]},
+		for left in transposedInput[0] {strconv.ParseUint(left, 10, 0) * leftFreqInRight[left]},
 	]
 
 	// Sum the similarity scores
